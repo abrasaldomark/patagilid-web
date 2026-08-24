@@ -9,13 +9,13 @@ import { getFirestore } from "firebase/firestore";
 // The configuration object containing our specific Firebase project keys.
 // These are safe to expose in the client side for Firebase.
 const firebaseConfig = {
-  projectId: "patagilid-a37cb",
-  appId: "1:369922125368:web:48d282d889b560c27d40cd",
-  storageBucket: "patagilid-a37cb.firebasestorage.app",
-  apiKey: "AIzaSyD3RJQgb8SDAJ3Af27BtRNsndECYFV4ai4",
-  authDomain: "patagilid-a37cb.firebaseapp.com",
-  messagingSenderId: "369922125368",
-  measurementId: "G-GBCVG800FT",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Next.js can sometimes run code on the server-side multiple times during development.
