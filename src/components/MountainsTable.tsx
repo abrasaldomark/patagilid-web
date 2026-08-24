@@ -17,8 +17,8 @@ export default function MountainsTable() {
   
   // Sorting State
   type SortField = "name" | "elevation" | "status" | "updatedAt";
-  const [sortField, setSortField] = useState<SortField>("name");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [sortField, setSortField] = useState<SortField>("elevation");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   
   // State for controlling the Edit Modal
   const [editingMountain, setEditingMountain] = useState<Mountain | null>(null);
