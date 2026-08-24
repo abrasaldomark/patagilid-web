@@ -20,6 +20,8 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
   const [latitude, setLatitude] = useState(mountain.latitude?.toString() || "");
   const [longitude, setLongitude] = useState(mountain.longitude?.toString() || "");
   const [referenceUrl, setReferenceUrl] = useState(mountain.referenceLink ?? "");
+  const [difficulty, setDifficulty] = useState(mountain.difficulty || "");
+  const [description, setDescription] = useState(mountain.description || "");
   const [isApproved, setIsApproved] = useState(mountain.isApproved ?? true);
   
   const [isSaving, setIsSaving] = useState(false);
@@ -47,6 +49,8 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
         latitude: parsedLat,
         longitude: parsedLon,
         referenceLink: referenceUrl,
+        difficulty,
+        description,
         isApproved,
         updatedAt: serverTimestamp() // Set the Last Updated time automatically
       };
@@ -119,6 +123,28 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
             <input 
               type="url" className="input-field" value={referenceUrl} onChange={(e) => setReferenceUrl(e.target.value)} 
             />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Difficulty</label>
+            <input 
+              type="text" className="input-field" value={difficulty} onChange={(e) => setDifficulty(e.target.value)} placeholder="e.g., 4/9"
+            />
+          </div>
+
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Description</label>
+            <textarea 
+              className="input-field" value={description} onChange={(e) => setDescription(e.target.value)} rows={3} style={{ resize: 'vertical' }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '5px' }}>
+            <input 
+              type="checkbox" id="isApproved" checked={isApproved} onChange={(e) => setIsApproved(e.target.checked)} 
+              style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+            />
+            <label htmlFor="isApproved" style={{ color: 'hsl(var(--text-secondary))', fontSize: '0.9rem', cursor: 'pointer' }}>Approved Peak</label>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
