@@ -1,49 +1,124 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* src/app/globals.css */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Define our CSS Variables (Custom Properties) at the root level so they can be used anywhere.
+   We use an HSL color palette to easily manipulate shades and opacities, creating a premium feel. */
+   :root {
+    /* Primary Colors: Deep indigo and vibrant purple accents */
+    --primary: 250 85% 60%; 
+    --primary-light: 250 85% 70%;
+    
+    /* Background: Light theme */
+    --background: 0 0% 98%;
+    --surface: 0 0% 100%;
+    --surface-hover: 240 5% 96%;
+    
+    /* Text Colors */
+    --text-primary: 240 10% 10%;
+    --text-secondary: 240 5% 35%;
+    
+    /* UI Elements */
+    --border: 240 5% 85%;
+    --border-light: 240 5% 90%;
+    --danger: 0 84% 60%;
+    --success: 142 71% 45%;
+    
+    /* Glassmorphism properties */
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-blur: blur(12px);
   }
-}
-
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+  
+  /* Basic Reset: removes default browser margins/padding and ensures consistent sizing */
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
   }
-}
+  
+  /* Apply our base styles to the html and body tags */
+  html,
+  body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    background-color: hsl(var(--background));
+    color: hsl(var(--text-primary));
+    /* Enable smooth scrolling across the app */
+    scroll-behavior: smooth;
+    /* Prevent text selection where it's usually annoying */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* A utility class to create a premium glassmorphism card effect */
+  .glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* A subtle, animated mesh gradient background for visual interest */
+  .bg-mesh {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: 
+      radial-gradient(at 0% 0%, hsla(250, 85%, 60%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(280, 85%, 60%, 0.15) 0px, transparent 50%);
+    pointer-events: none;
+  }
+  
+  /* Global anchor tag styling */
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  
+  a:hover {
+    color: hsl(var(--primary));
+  }
+  
+  /* Primary Button Styling */
+  .btn-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px hsla(var(--primary), 0.4);
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px hsla(var(--primary), 0.6);
+  }
+  
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  
+  /* Form Input Styling */
+  .input-field {
+    width: 100%;
+    background: hsl(var(--surface));
+    border: 1px solid var(--border);
+    color: hsl(var(--text-primary));
+    padding: 12px 16px;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .input-field:focus {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 0 3px hsla(var(--primary), 0.2);
+  }
