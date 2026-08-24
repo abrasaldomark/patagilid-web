@@ -15,18 +15,25 @@ export interface Mountain {
     latitude?: number;
     longitude?: number;
     
-    difficulty?: string;
+    region?: string;
+    islandGroup?: string;
+    
+    difficultyLevel?: string;
+    trailClass?: string;
     description?: string;
     referenceLink?: string; // Mobile schema
-
 
     
     // Approval system fields
     isApproved?: boolean;
-    submittedBy?: string; // User ID who submitted
+    contributorId?: string; // User ID who submitted
+    contributorEmail?: string;
+    contributorName?: string;
     approvedAt?: any; // Firestore Timestamp or ISO string
     updatedAt?: any; // Firestore Timestamp
     
     // Calibration system fields
+    isVerifiedByCommunity?: boolean;
+    communityVerifications?: number;
     pendingCalibrationsCount?: number;
   }

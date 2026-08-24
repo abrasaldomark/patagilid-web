@@ -17,13 +17,21 @@ interface EditMountainModalProps {
 export default function EditMountainModal({ mountain, onClose, onSaved }: EditMountainModalProps) {
   const [name, setName] = useState(mountain.name || "");
   const [elevation, setElevation] = useState(mountain.elevationMASL?.toString() || "");
-  const [latitude, setLatitude] = useState(mountain.latitude?.toString() || "");
-  const [longitude, setLongitude] = useState(mountain.longitude?.toString() || "");
-  const [referenceUrl, setReferenceUrl] = useState(mountain.referenceLink ?? "");
-  const [difficulty, setDifficulty] = useState(mountain.difficulty || "");
+  const [difficultyLevel, setDifficultyLevel] = useState(mountain.difficultyLevel || "");
+  const [trailClass, setTrailClass] = useState(mountain.trailClass || "");
   const [description, setDescription] = useState(mountain.description || "");
-  const [submittedBy, setSubmittedBy] = useState(mountain.submittedBy || "");
+  
+  const [region, setRegion] = useState(mountain.region || "");
+  const [islandGroup, setIslandGroup] = useState(mountain.islandGroup || "");
+
+  const [contributorId, setContributorId] = useState(mountain.contributorId || "");
+  const [contributorEmail, setContributorEmail] = useState(mountain.contributorEmail || "");
+  const [contributorName, setContributorName] = useState(mountain.contributorName || "");
+
   const [pendingCalibrationsCount, setPendingCalibrationsCount] = useState(mountain.pendingCalibrationsCount?.toString() || "0");
+  const [communityVerifications, setCommunityVerifications] = useState(mountain.communityVerifications?.toString() || "0");
+  const [isVerifiedByCommunity, setIsVerifiedByCommunity] = useState(mountain.isVerifiedByCommunity ?? false);
+  
   const [isApproved, setIsApproved] = useState(mountain.isApproved ?? true);
   
   const [isSaving, setIsSaving] = useState(false);
@@ -51,10 +59,17 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
         latitude: parsedLat,
         longitude: parsedLon,
         referenceLink: referenceUrl,
-        difficulty,
+        region,
+        islandGroup,
+        difficultyLevel,
+        trailClass,
         description,
-        submittedBy,
+        contributorId,
+        contributorEmail,
+        contributorName,
         pendingCalibrationsCount: parseInt(pendingCalibrationsCount) || 0,
+        communityVerifications: parseInt(communityVerifications) || 0,
+        isVerifiedByCommunity,
         isApproved,
         updatedAt: serverTimestamp() // Set the Last Updated time automatically
       };
@@ -82,7 +97,7 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
       display: 'flex', justifyContent: 'center', alignItems: 'center',
       zIndex: 1000
     }}>
-      <div className="glass-panel" style={{ padding: '30px', width: '100%', maxWidth: '500px', margin: '20px' }}>
+      <div className="glass-panel" style={{ padding: '30px', width: '100%', maxWidth: '500px', margin: '20px', maxHeight: '90vh', overflowY: 'auto' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <h2>Edit Mountain</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'hsl(var(--text-secondary))', cursor: 'pointer', fontSize: '1.2rem' }}>
@@ -129,11 +144,34 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
             />
           </div>
 
-          <div>
-            <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Difficulty</label>
-            <input 
-              type="text" className="input-field" value={difficulty} onChange={(e) => setDifficulty(e.target.value)} placeholder="e.g., 4/9"
-            />
+          <div style={{ display: 'flex', gap: '15px' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Region</label>
+              <input 
+                type="text" className="input-field" value={region} onChange={(e) => setRegion(e.target.value)} 
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Island Group</label>
+              <input 
+                type="text" className="input-field" value={islandGroup} onChange={(e) => setIslandGroup(e.target.value)} 
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '15px' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Difficulty</label>
+              <input 
+                type="text" className="input-field" value={difficultyLevel} onChange={(e) => setDifficultyLevel(e.target.value)} placeholder="e.g., 4/9"
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Trail Class</label>
+              <input 
+                type="text" className="input-field" value={trailClass} onChange={(e) => setTrailClass(e.target.value)} placeholder="e.g., Class 1-2"
+              />
+            </div>
           </div>
 
           <div>
@@ -143,27 +181,59 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
             />
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '5px' }}>
-            <input 
-              type="checkbox" id="isApproved" checked={isApproved} onChange={(e) => setIsApproved(e.target.checked)} 
-              style={{ width: '18px', height: '18px', cursor: 'pointer' }}
-            />
-            <label htmlFor="isApproved" style={{ color: 'hsl(var(--text-secondary))', fontSize: '0.9rem', cursor: 'pointer' }}>Approved Peak</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', marginTop: '5px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <input 
+                type="checkbox" id="isApproved" checked={isApproved} onChange={(e) => setIsApproved(e.target.checked)} 
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+              />
+              <label htmlFor="isApproved" style={{ color: 'hsl(var(--text-secondary))', fontSize: '0.9rem', cursor: 'pointer' }}>Approved Peak</label>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <input 
+                type="checkbox" id="isVerifiedByCommunity" checked={isVerifiedByCommunity} onChange={(e) => setIsVerifiedByCommunity(e.target.checked)} 
+                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+              />
+              <label htmlFor="isVerifiedByCommunity" style={{ color: 'hsl(var(--text-secondary))', fontSize: '0.9rem', cursor: 'pointer' }}>Community Verified (GPS)</label>
+            </div>
           </div>
 
           <div style={{ display: 'flex', gap: '15px' }}>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Submitted By (User ID)</label>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Contributor Name</label>
               <input 
-                type="text" className="input-field" value={submittedBy} onChange={(e) => setSubmittedBy(e.target.value)} 
+                type="text" className="input-field" value={contributorName} onChange={(e) => setContributorName(e.target.value)} 
               />
             </div>
             <div style={{ flex: 1 }}>
-              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Pending Calibrations</label>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Contributor Email</label>
               <input 
-                type="number" className="input-field" value={pendingCalibrationsCount} onChange={(e) => setPendingCalibrationsCount(e.target.value)} 
+                type="text" className="input-field" value={contributorEmail} onChange={(e) => setContributorEmail(e.target.value)} 
               />
             </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '15px' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Contributor ID</label>
+              <input 
+                type="text" className="input-field" value={contributorId} onChange={(e) => setContributorId(e.target.value)} 
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Community Verifications</label>
+              <input 
+                type="number" className="input-field" value={communityVerifications} onChange={(e) => setCommunityVerifications(e.target.value)} 
+              />
+            </div>
+          </div>
+
+          <div>
+            <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Pending Calibrations Count</label>
+            <input 
+              type="number" className="input-field" value={pendingCalibrationsCount} onChange={(e) => setPendingCalibrationsCount(e.target.value)} 
+            />
           </div>
 
           <div style={{ padding: '15px', background: 'hsla(var(--surface), 0.5)', borderRadius: '8px', marginTop: '10px' }}>
