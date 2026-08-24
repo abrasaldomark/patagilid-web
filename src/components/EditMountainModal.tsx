@@ -22,6 +22,8 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
   const [referenceUrl, setReferenceUrl] = useState(mountain.referenceLink ?? "");
   const [difficulty, setDifficulty] = useState(mountain.difficulty || "");
   const [description, setDescription] = useState(mountain.description || "");
+  const [submittedBy, setSubmittedBy] = useState(mountain.submittedBy || "");
+  const [pendingCalibrationsCount, setPendingCalibrationsCount] = useState(mountain.pendingCalibrationsCount?.toString() || "0");
   const [isApproved, setIsApproved] = useState(mountain.isApproved ?? true);
   
   const [isSaving, setIsSaving] = useState(false);
@@ -51,6 +53,8 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
         referenceLink: referenceUrl,
         difficulty,
         description,
+        submittedBy,
+        pendingCalibrationsCount: parseInt(pendingCalibrationsCount) || 0,
         isApproved,
         updatedAt: serverTimestamp() // Set the Last Updated time automatically
       };
@@ -145,6 +149,39 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
               style={{ width: '18px', height: '18px', cursor: 'pointer' }}
             />
             <label htmlFor="isApproved" style={{ color: 'hsl(var(--text-secondary))', fontSize: '0.9rem', cursor: 'pointer' }}>Approved Peak</label>
+          </div>
+
+          <div style={{ display: 'flex', gap: '15px' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Submitted By (User ID)</label>
+              <input 
+                type="text" className="input-field" value={submittedBy} onChange={(e) => setSubmittedBy(e.target.value)} 
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '5px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>Pending Calibrations</label>
+              <input 
+                type="number" className="input-field" value={pendingCalibrationsCount} onChange={(e) => setPendingCalibrationsCount(e.target.value)} 
+              />
+            </div>
+          </div>
+
+          <div style={{ padding: '15px', background: 'hsla(var(--surface), 0.5)', borderRadius: '8px', marginTop: '10px' }}>
+            <h4 style={{ fontSize: '0.85rem', color: 'hsl(var(--text-secondary))', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Read-Only Metadata</h4>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', fontSize: '0.85rem' }}>
+              <div>
+                <span style={{ color: 'hsl(var(--text-secondary))', display: 'block' }}>Document ID</span>
+                <span style={{ fontFamily: 'monospace' }}>{mountain.id}</span>
+              </div>
+              <div>
+                <span style={{ color: 'hsl(var(--text-secondary))', display: 'block' }}>Created / Approved At</span>
+                <span>{mountain.approvedAt ? new Date(mountain.approvedAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
+              </div>
+              <div style={{ gridColumn: '1 / -1' }}>
+                <span style={{ color: 'hsl(var(--text-secondary))', display: 'block' }}>Last Updated</span>
+                <span>{mountain.updatedAt ? new Date(mountain.updatedAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
+              </div>
+            </div>
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '10px' }}>
