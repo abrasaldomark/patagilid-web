@@ -138,7 +138,7 @@ export default function ApprovalsTable() {
                     <td style={{ padding: '15px 20px' }}>{mountain.name}</td>
                     <td style={{ padding: '15px 20px' }}>{mountain.elevationMASL ?? 'N/A'}m</td>
                     <td style={{ padding: '15px 20px', color: 'hsl(var(--text-secondary))', fontSize: '0.9rem' }}>
-                      {mountain.submittedBy || 'Unknown User'}
+                      {mountain.contributorName || mountain.contributorEmail || 'Unknown User'}
                     </td>
                     <td style={{ padding: '15px 20px', display: 'flex', gap: '10px' }}>
                       <button 
