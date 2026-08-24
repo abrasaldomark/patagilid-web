@@ -17,6 +17,10 @@ interface EditMountainModalProps {
 export default function EditMountainModal({ mountain, onClose, onSaved }: EditMountainModalProps) {
   const [name, setName] = useState(mountain.name || "");
   const [elevation, setElevation] = useState(mountain.elevationMASL?.toString() || "");
+  const [latitude, setLatitude] = useState(mountain.latitude?.toString() || "");
+  const [longitude, setLongitude] = useState(mountain.longitude?.toString() || "");
+  const [referenceUrl, setReferenceUrl] = useState(mountain.referenceLink ?? "");
+  
   const [difficultyLevel, setDifficultyLevel] = useState(mountain.difficultyLevel || "");
   const [trailClass, setTrailClass] = useState(mountain.trailClass || "");
   const [description, setDescription] = useState(mountain.description || "");
