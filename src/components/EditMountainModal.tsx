@@ -3,7 +3,7 @@
 // src/components/EditMountainModal.tsx
 // This component provides a glassmorphic modal overlay to edit a mountain's details.
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/firebase/config";
 import { Mountain } from "@/types/mountain";
@@ -40,6 +40,18 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
   
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Prevent background scrolling while modal is open
+  useEffect(() => {
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+    };
+  }, []);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,10 +110,11 @@ export default function EditMountainModal({ mountain, onClose, onSaved }: EditMo
     <div style={{
       position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
       backgroundColor: 'rgba(0, 0, 0, 0.6)',
-      display: 'flex', justifyContent: 'center', alignItems: 'center',
+      display: 'flex', justifyContent: 'center', alignItems: 'flex-start',
+      overflowY: 'auto',
       zIndex: 1000
     }}>
-      <div className="glass-panel" style={{ padding: '30px', width: '100%', maxWidth: '500px', margin: '20px', maxHeight: '90vh', overflowY: 'auto' }}>
+      <div className="glass-panel" style={{ padding: '30px', width: '100%', maxWidth: '500px', margin: '40px 20px', flexShrink: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
           <h2>Edit Mountain</h2>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'hsl(var(--text-secondary))', cursor: 'pointer', fontSize: '1.2rem' }}>
