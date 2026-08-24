@@ -212,7 +212,7 @@ export default function MountainsTable() {
                       Edit
                     </button>
                     <button 
-                      onClick={() => handleDeleteClick(mountain.id, mountain.name)}
+                      onClick={() => handleDeleteClick(mountain.id!, mountain.name)}
                       className="btn-primary" 
                       style={{ padding: '6px 12px', fontSize: '0.8rem', background: 'hsl(var(--danger))', color: '#fff', border: 'none', boxShadow: 'none' }}
                     >
