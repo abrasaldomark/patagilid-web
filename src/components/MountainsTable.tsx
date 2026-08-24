@@ -123,6 +123,9 @@ export default function MountainsTable() {
       <div style={{ padding: '20px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '15px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <h2 style={{ fontSize: '1.2rem' }}>All Mountains</h2>
+          <span style={{ background: 'hsla(var(--primary), 0.1)', color: 'hsl(var(--primary))', padding: '4px 10px', borderRadius: '20px', fontSize: '0.85rem', fontWeight: 'bold' }}>
+            {processedMountains.length} total
+          </span>
         </div>
         <div style={{ position: 'relative', width: '100%', maxWidth: '300px' }}>
           <input 
@@ -143,6 +146,7 @@ export default function MountainsTable() {
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ backgroundColor: 'hsla(var(--surface), 0.5)' }}>
+              <th style={{ padding: '15px 20px', color: 'hsl(var(--text-secondary))', fontWeight: '500', width: '50px' }}>#</th>
               <th 
                 onClick={() => handleSort("name")}
                 style={{ padding: '15px 20px', color: 'hsl(var(--text-secondary))', fontWeight: '500', cursor: 'pointer', userSelect: 'none' }}
@@ -173,8 +177,9 @@ export default function MountainsTable() {
           </thead>
           <tbody>
             {processedMountains.length > 0 ? (
-              processedMountains.map((mountain) => (
+              processedMountains.map((mountain, index) => (
                 <tr key={mountain.id} style={{ borderTop: '1px solid var(--border)' }}>
+                  <td style={{ padding: '15px 20px', color: 'hsl(var(--text-secondary))' }}>{index + 1}</td>
                   <td style={{ padding: '15px 20px' }}>{mountain.name}</td>
                   <td style={{ padding: '15px 20px' }}>
                     {mountain.elevationMASL != null ? `${mountain.elevationMASL}m` : <span style={{ color: 'hsl(var(--text-secondary))' }}>N/A</span>}
@@ -223,7 +228,7 @@ export default function MountainsTable() {
               ))
             ) : (
               <tr>
-                <td colSpan={5} style={{ padding: '30px', textAlign: 'center', color: 'hsl(var(--text-secondary))' }}>
+                <td colSpan={6} style={{ padding: '30px', textAlign: 'center', color: 'hsl(var(--text-secondary))' }}>
                   No mountains found matching "{searchQuery}"
                 </td>
               </tr>
